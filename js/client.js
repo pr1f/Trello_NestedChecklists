@@ -22,9 +22,9 @@
   }
 
   function normalizeData(data) {
-    if (!data || typeof data !== 'object') return { v: 3, ttl: DEFAULT_TITLE, ac: 0, i: [], u: null };
+    if (!data || typeof data !== 'object') return { v: 4, ttl: DEFAULT_TITLE, ac: 0, i: [], u: null };
     return {
-      v: 3,
+      v: 4,
       ttl: String(data.ttl || data.title || DEFAULT_TITLE).trim() || DEFAULT_TITLE,
       ac: data.ac ? 1 : 0,
       i: normalizeItems(data.i || data.items || []),
@@ -81,11 +81,7 @@
           content: {
             type: 'iframe',
             url: t.signUrl('./section.html'),
-            height: 360,
-          },
-          action: {
-            text: 'Open editor',
-            callback: openEditor,
+            height: 390,
           },
         };
       });

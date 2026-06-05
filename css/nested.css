@@ -1,12 +1,30 @@
 :root {
+  color-scheme: light dark;
   --text: #172b4d;
   --muted: #5e6c84;
   --border: #dfe1e6;
   --background: #f4f5f7;
   --surface: #ffffff;
-  --primary: #0079bf;
+  --surface-hover: #ebecf0;
+  --primary: #0c66e4;
+  --primary-hover: #0055cc;
   --danger: #de350b;
   --drop: #4c9aff;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text: #dee4ea;
+    --muted: #9fadbc;
+    --border: #3d4652;
+    --background: #161a1d;
+    --surface: #1d2125;
+    --surface-hover: #2c333a;
+    --primary: #579dff;
+    --primary-hover: #85b8ff;
+    --danger: #ff8f73;
+    --drop: #85b8ff;
+  }
 }
 
 * {
@@ -101,7 +119,7 @@ textarea:focus {
 button {
   border: 0;
   border-radius: 4px;
-  background: #ebecf0;
+  background: var(--surface-hover);
   color: var(--text);
   cursor: pointer;
   font: inherit;
@@ -109,7 +127,7 @@ button {
 }
 
 button:hover:not(:disabled) {
-  background: #dfe1e6;
+  background: color-mix(in srgb, var(--surface-hover) 78%, var(--border));
 }
 
 button:disabled {
@@ -123,7 +141,7 @@ button:disabled {
 }
 
 .mod-primary:hover:not(:disabled) {
-  background: #026aa7;
+  background: var(--primary-hover);
 }
 
 .quiet-button {

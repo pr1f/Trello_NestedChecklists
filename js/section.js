@@ -6,7 +6,7 @@
   const DEFAULT_TITLE = 'Nested Checklist';
   const t = window.TrelloPowerUp.iframe();
 
-  let state = { v: 3, ttl: DEFAULT_TITLE, ac: 0, i: [], u: null };
+  let state = { v: 4, ttl: DEFAULT_TITLE, ac: 0, i: [], u: null };
 
   const els = {
     summary: document.getElementById('summary'),
@@ -15,6 +15,7 @@
     preview: document.getElementById('preview'),
     renameBtn: document.getElementById('renameBtn'),
     openEditorBtn: document.getElementById('openEditorBtn'),
+    masterToggle: document.getElementById('masterToggle'),
   };
 
   function makeId() {
@@ -37,9 +38,9 @@
   }
 
   function normalizeData(data) {
-    if (!data || typeof data !== 'object') return { v: 3, ttl: DEFAULT_TITLE, ac: 0, i: [], u: null };
+    if (!data || typeof data !== 'object') return { v: 4, ttl: DEFAULT_TITLE, ac: 0, i: [], u: null };
     return {
-      v: 3,
+      v: 4,
       ttl: String(data.ttl || data.title || DEFAULT_TITLE).trim() || DEFAULT_TITLE,
       ac: data.ac ? 1 : 0,
       i: normalizeItems(data.i || data.items || []),
@@ -106,6 +107,10 @@
     });
   }
 
+  function setAllDone(done) {
+    state.i.forEach((item) => setDoneRecursive(item, done));
+  }
+
   function renderTree(items, container, depth) {
     items.forEach((item) => {
       const node = document.createElement('div');
@@ -117,15 +122,21 @@
 
       const branch = getBranchState(item);
 
-      const expandBtn = document.createElement('button');
-      expandBtn.type = 'button';
-      expandBtn.className = 'expand-btn';
-      expandBtn.dataset.action = 'toggle-collapse';
-      expandBtn.dataset.id = item.id;
-      expandBtn.textContent = item.ch.length ? (item.c ? '▶' : '▼') : '·';
-      expandBtn.disabled = item.ch.length === 0;
-      expandBtn.title = item.c ? 'Розгорнути' : 'Згорнути';
-      row.appendChild(expandBtn);
+      if (item.ch.length) {
+        const expandBtn = document.createElement('button');
+        expandBtn.type = 'button';
+        expandBtn.className = 'expand-btn';
+        expandBtn.dataset.action = 'toggle-collapse';
+        expandBtn.dataset.id = item.id;
+        expandBtn.textContent = item.c ? '▶' : '▼';
+        expandBtn.title = item.c ? 'Розгорнути' : 'Згорнути';
+        row.appendChild(expandBtn);
+      } else {
+        const spacer = document.createElement('span');
+        spacer.className = 'expand-spacer';
+        spacer.setAttribute('aria-hidden', 'true');
+        row.appendChild(spacer);
+      }
 
       const checkbox = document.createElement('input');
       checkbox.type = 'checkbox';
@@ -136,17 +147,27 @@
       checkbox.indeterminate = branch.partial;
       row.appendChild(checkbox);
 
+      const label = document.createElement('span');
+      label.className = `preview-label${item.ch.length ? ' is-collapsible' : ''}`;
+      if (item.ch.length) {
+        label.dataset.action = 'toggle-collapse';
+        label.dataset.id = item.id;
+        label.title = item.c ? 'Розгорнути' : 'Згорнути';
+      }
+
       const text = document.createElement('span');
       text.className = 'preview-text';
       if (branch.checked) text.classList.add('is-done');
       if (branch.partial) text.classList.add('is-partial');
       text.textContent = item.t;
-      row.appendChild(text);
+      label.appendChild(text);
 
       const meta = document.createElement('span');
       meta.className = 'preview-meta';
       meta.textContent = formatBranchProgress(item);
-      row.appendChild(meta);
+      label.appendChild(meta);
+
+      row.appendChild(label);
 
       const addChild = document.createElement('button');
       addChild.type = 'button';
@@ -193,6 +214,8 @@
     els.summary.textContent = stats.total ? `${stats.done}/${stats.total} виконано · ${percent}%` : '0 пунктів';
     els.updated.textContent = state.u ? `Оновлено: ${new Date(state.u).toLocaleString()}` : '';
     els.bar.style.width = `${percent}%`;
+    els.masterToggle.checked = stats.total > 0 && stats.done === stats.total;
+    els.masterToggle.indeterminate = stats.done > 0 && stats.done < stats.total;
 
     const fragment = document.createDocumentFragment();
     if (!state.i.length) {
@@ -252,8 +275,17 @@
     await saveAndRender();
   }
 
+  async function toggleAll(event) {
+    setAllDone(event.target.checked);
+    applyAutoCollapse();
+    await saveAndRender();
+  }
+
   els.openEditorBtn.addEventListener('click', openEditor);
   els.renameBtn.addEventListener('click', renameChecklist);
+  els.masterToggle.addEventListener('change', (event) => {
+    toggleAll(event).catch(console.error);
+  });
   els.preview.addEventListener('click', (event) => {
     handlePreviewClick(event).catch(console.error);
   });
