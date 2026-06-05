@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Nested Checklist Preview</title>
+    <link rel="stylesheet" href="https://p.trellocdn.com/power-up.min.css" />
+    <link rel="stylesheet" href="./css/section.css" />
+  </head>
+  <body>
+    <main class="section-shell">
+      <div class="topline">
+        <div>
+          <strong id="summary">Завантаження…</strong>
+          <div id="updated" class="muted"></div>
+        </div>
+        <div class="top-actions">
+          <button id="renameBtn" type="button">Перейменувати</button>
+          <button id="openEditorBtn" class="mod-primary" type="button">Відкрити</button>
+        </div>
+      </div>
+      <div class="progress"><div id="bar" class="bar"></div></div>
+      <div id="preview" class="preview"></div>
+    </main>
+
+    <script src="https://p.trellocdn.com/power-up.min.js"></script>
+    <script src="./js/section.js"></script>
+  </body>
+</html>

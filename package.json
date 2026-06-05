@@ -1,0 +1,12 @@
+{
+  "name": "trello-nested-checklist-powerup",
+  "version": "0.3.0",
+  "private": true,
+  "description": "Private Trello Power-Up that adds nested checklist data to cards via pluginData.",
+  "scripts": {
+    "serve": "npx http-server . -p 8080"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  }
+}

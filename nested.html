@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Nested Checklist</title>
+    <link rel="stylesheet" href="https://p.trellocdn.com/power-up.min.css" />
+    <link rel="stylesheet" href="./css/nested.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="header">
+        <div class="title-block">
+          <label class="title-label" for="listTitle">Назва checklist-а</label>
+          <input id="listTitle" class="list-title-input" type="text" placeholder="Назва checklist-а" autocomplete="off" />
+          <p id="summary" class="muted">Завантаження…</p>
+        </div>
+        <button id="closeBtn" class="quiet-button" type="button">Закрити</button>
+      </header>
+
+      <section class="add-root">
+        <input id="newRootText" type="text" placeholder="Новий основний пункт…" autocomplete="off" />
+        <button id="addRootBtn" class="mod-primary" type="button">Додати</button>
+      </section>
+
+      <section class="toolbar" aria-label="Дії">
+        <button id="expandAllBtn" type="button">Розгорнути все</button>
+        <button id="collapseAllBtn" type="button">Згорнути все</button>
+        <button id="autoCollapseBtn" type="button">Автозгортання: вимк.</button>
+        <button id="exportBtn" type="button">Експорт</button>
+        <button id="importBtn" type="button">Імпорт</button>
+        <button id="clearDoneBtn" type="button">Видалити виконані</button>
+      </section>
+
+      <p class="hint">Підказка: Enter — новий пункт нижче, Tab або Ctrl+Enter — підпункт, Shift+Tab — винести пункт на рівень вище. Перетягуй пункт за ☰.</p>
+
+      <div id="status" class="status">Готово</div>
+      <div id="limitMeter" class="limit-meter" hidden></div>
+
+      <section id="importExportPanel" class="json-panel" hidden>
+        <label for="jsonBox">JSON для експорту / імпорту</label>
+        <textarea id="jsonBox" spellcheck="false"></textarea>
+        <div class="panel-actions">
+          <button id="applyImportBtn" class="mod-primary" type="button">Застосувати імпорт</button>
+          <button id="hideJsonBtn" type="button">Сховати</button>
+        </div>
+      </section>
+
+      <section id="emptyState" class="empty" hidden>
+        Ще немає вкладених пунктів. Додай перший основний пункт вище.
+      </section>
+
+      <section id="tree" class="tree" aria-label="Вкладений checklist"></section>
+    </main>
+
+    <script src="https://p.trellocdn.com/power-up.min.js"></script>
+    <script src="./js/nested.js"></script>
+  </body>
+</html>
