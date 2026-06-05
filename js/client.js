@@ -5,6 +5,7 @@
   const DATA_KEY = 'nestedChecklistData';
   const DEFAULT_TITLE = 'Nested Checklist';
   const ICON = new URL('../assets/checklist.svg', document.currentScript.src).href;
+  const PROGRESS_ICON = new URL('../assets/progress.svg', document.currentScript.src).href;
 
   function makeId() {
     return `n_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 8)}`;
@@ -47,6 +48,16 @@
     const stats = count(normalizeData(data).i);
     if (!stats.total) return null;
     return `${stats.done}/${stats.total}`;
+  }
+
+  function getPercent(stats) {
+    return stats.total ? Math.round((stats.done / stats.total) * 100) : 0;
+  }
+
+  function getPercentColor(percent) {
+    if (percent >= 100) return 'green';
+    if (percent > 0) return 'yellow';
+    return 'blue';
   }
 
   function openEditor(t) {
@@ -92,12 +103,22 @@
         const normalized = normalizeData(data);
         const text = getProgressText(normalized);
         if (!text) return [];
+
         const stats = count(normalized.i);
-        return [{
-          icon: ICON,
-          text: `${normalized.ttl}: ${text}`,
-          color: stats.done === stats.total ? 'green' : 'blue',
-        }];
+        const percent = getPercent(stats);
+
+        return [
+          {
+            icon: ICON,
+            text: `${normalized.ttl}: ${text}`,
+            color: stats.done === stats.total ? 'green' : 'blue',
+          },
+          {
+            icon: PROGRESS_ICON,
+            text: `${percent}%`,
+            color: getPercentColor(percent),
+          },
+        ];
       });
     },
 
@@ -106,13 +127,24 @@
         const normalized = normalizeData(data);
         const text = getProgressText(normalized);
         if (!text) return [];
+
         const stats = count(normalized.i);
-        return [{
-          title: normalized.ttl,
-          text: `${text} виконано`,
-          color: stats.done === stats.total ? 'green' : 'blue',
-          callback: openEditor,
-        }];
+        const percent = getPercent(stats);
+
+        return [
+          {
+            title: normalized.ttl,
+            text: `${text} виконано`,
+            color: stats.done === stats.total ? 'green' : 'blue',
+            callback: openEditor,
+          },
+          {
+            title: 'Прогрес',
+            text: `${percent}%`,
+            color: getPercentColor(percent),
+            callback: openEditor,
+          },
+        ];
       });
     },
   });

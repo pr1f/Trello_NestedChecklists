@@ -95,3 +95,9 @@ npm run serve
 - The card preview supports expand/collapse, checking parent items with all children, and adding child items using the + button.
 - Optional auto-collapse for completed branches.
 - Parent items display branch progress.
+
+
+## v5
+
+- Додано окремий badge з відсотком виконання на лицьовій стороні картки.
+- Додано detail badge «Прогрес» всередині картки.
