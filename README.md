@@ -1,10 +1,12 @@
-# Trello Nested Checklist Power-Up
+# **ATTENTION!!! MADE BY AI**
+
+## Trello Nested Checklist Power-Up
 
 Приватний Trello Power-Up для особистого використання. Додає до картки Trello окремий блок **Nested Checklist** з вкладеними пунктами.
 
 > Важливо: це не змінює стандартний checklist Trello. Trello не має нативної вкладеності `checkitem -> checkitem`, тому Power-Up зберігає власну структуру у `pluginData` картки.
 
-## Що вміє
+### Що вміє
 
 - кнопка **Nested Checklist** у картці;
 - окремий редактор у модальному вікні;
@@ -17,11 +19,11 @@
 - badge з прогресом на картці;
 - експорт / імпорт JSON.
 
-## Обмеження
+### Обмеження
 
 Trello `pluginData` має ліміт близько 4096 символів на `card/shared`. Тому цей Power-Up підходить для невеликих особистих вкладених списків. Якщо список дуже великий, краще експортувати JSON або робити версію з окремим сервером / базою даних.
 
-## Структура файлів
+### Структура файлів
 
 ```text
 index.html                  # iframe connector для Trello
@@ -35,7 +37,7 @@ js/nested.js                # логіка редактора
 js/section.js               # логіка превʼю
 ```
 
-## Як встановити через GitHub Pages
+### Як встановити через GitHub Pages
 
 1. Створи новий публічний або приватний репозиторій на GitHub.
 2. Завантаж усі файли з цієї папки в корінь репозиторію.
@@ -53,7 +55,7 @@ https://твій-логін.github.io/trello-nested-checklist-powerup/
 https://твій-логін.github.io/trello-nested-checklist-powerup/index.html
 ```
 
-## Як підключити в Trello
+### Як підключити в Trello
 
 1. Відкрий Trello Power-Up Admin: `https://trello.com/power-ups/admin`.
 2. Обери Workspace, де ти адмін.
@@ -69,7 +71,7 @@ https://твій-логін.github.io/trello-nested-checklist-powerup/index.html
 8. В меню Power-Ups знайди його у вкладці **Custom** і додай на дошку.
 9. Відкрий будь-яку картку — має зʼявитися кнопка **Nested Checklist** і секція **Nested Checklist**.
 
-## Локальна перевірка
+### Локальна перевірка
 
 Для Trello потрібен HTTPS URL, тому локальна HTML-сторінка напряму не запрацює як Power-Up. Але для перегляду файлів можна запустити простий сервер:
 
@@ -80,7 +82,7 @@ npm run serve
 
 Для реального тесту в Trello використовуй GitHub Pages або інший HTTPS-хостинг.
 
-## Що можна доробити потім
+### Що можна доробити потім
 
 - синхронізацію основного прогресу зі стандартним Trello checklist;
 - drag-and-drop переміщення пунктів;
@@ -88,7 +90,7 @@ npm run serve
 - призначення відповідальних;
 - серверне збереження без ліміту 4096 символів.
 
-## v3 changes
+### v3 changes
 
 - Drag & drop reorder via the ☰ handle.
 - In the editor: Enter creates a new sibling, Tab or Ctrl+Enter creates a child item, Shift+Tab moves an item one level up.
