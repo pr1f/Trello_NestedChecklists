@@ -4,8 +4,9 @@
 
   const DATA_KEY = 'nestedChecklistData';
   const DEFAULT_TITLE = 'Nested Checklist';
-  const ICON = new URL('../assets/checklist.svg', document.currentScript.src).href;
-  const PROGRESS_ICON = new URL('../assets/progress.svg', document.currentScript.src).href;
+  const SCRIPT_URL = document.currentScript.src;
+  const ICON = new URL('../assets/checklist.svg', SCRIPT_URL).href;
+
 
   function makeId() {
     return `n_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 8)}`;
@@ -54,9 +55,20 @@
     return stats.total ? Math.round((stats.done / stats.total) * 100) : 0;
   }
 
-  function getPercentColor(percent) {
+  function getProgressIcon(percent) {
+    const value = Math.max(0, Math.min(100, Number(percent) || 0));
+    const file = String(value).padStart(3, '0');
+    return new URL(`../assets/progress/progress-${file}.svg`, SCRIPT_URL).href;
+  }
+
+  // Trello badge backgrounds support only a small predefined palette.
+  // The custom SVG icon uses the requested detailed color ranges;
+  // the badge background uses the closest available Trello color.
+  function getNearestBadgeColor(percent) {
     if (percent >= 100) return 'green';
-    if (percent >= 25) return 'yellow';
+    if (percent >= 76) return 'lime';
+    if (percent >= 51) return 'yellow';
+    if (percent >= 1) return 'orange';
     return 'red';
   }
 
@@ -114,9 +126,9 @@
             color: stats.done === stats.total ? 'green' : 'blue',
           },
           {
-            icon: PROGRESS_ICON,
+            icon: getProgressIcon(percent),
             text: `${percent}%`,
-            color: getPercentColor(percent),
+            color: getNearestBadgeColor(percent),
           },
         ];
       });
@@ -141,7 +153,7 @@
           {
             title: 'Прогрес',
             text: `${percent}%`,
-            color: getPercentColor(percent),
+            color: getNearestBadgeColor(percent),
             callback: openEditor,
           },
         ];
