@@ -1,4 +1,5 @@
-# **ATTENTION!!! MADE BY AI**
+# **ATTENTION!!! MADE BY AI 🇬🇧:** 
+# **УВАГА!!! ЗРОБЛЕНО З ВИКОРИСТАННЯМ ШТУЧНОГО ІНТЕЛЕКТУ 🇺🇦:**
 
 ## Trello Nested Checklist Power-Up
 
