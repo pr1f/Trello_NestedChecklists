@@ -56,8 +56,8 @@
 
   function getPercentColor(percent) {
     if (percent >= 100) return 'green';
-    if (percent > 0) return 'yellow';
-    return 'blue';
+    if (percent >= 25) return 'yellow';
+    return 'red';
   }
 
   function openEditor(t) {
