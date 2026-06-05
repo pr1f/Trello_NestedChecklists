@@ -24,9 +24,9 @@
   }
 
   function normalizeData(data) {
-    if (!data || typeof data !== 'object') return { v: 4, ttl: DEFAULT_TITLE, ac: 0, i: [], u: null };
+    if (!data || typeof data !== 'object') return { v: 5, ttl: DEFAULT_TITLE, ac: 0, i: [], u: null };
     return {
-      v: 4,
+      v: 5,
       ttl: String(data.ttl || data.title || DEFAULT_TITLE).trim() || DEFAULT_TITLE,
       ac: data.ac ? 1 : 0,
       i: normalizeItems(data.i || data.items || []),
@@ -57,12 +57,28 @@
 
   function getProgressIcon(percent) {
     const value = Math.max(0, Math.min(100, Number(percent) || 0));
-    const file = String(value).padStart(3, '0');
+    let iconPercent;
+
+    if (value === 0) {
+      iconPercent = 0;
+    } else if (value <= 25) {
+      iconPercent = Math.max(2, Math.floor(value / 2) * 2);
+    } else if (value <= 50) {
+      iconPercent = Math.max(26, Math.floor(value / 2) * 2);
+    } else if (value <= 75) {
+      iconPercent = Math.max(52, Math.floor(value / 2) * 2);
+    } else if (value < 100) {
+      iconPercent = Math.max(76, Math.floor(value / 2) * 2);
+    } else {
+      iconPercent = 100;
+    }
+
+    const file = String(iconPercent).padStart(3, '0');
     return new URL(`../assets/progress/progress-${file}.svg`, SCRIPT_URL).href;
   }
 
   // Trello badge backgrounds support only a small predefined palette.
-  // The custom SVG icon uses the requested detailed color ranges;
+  // The custom SVG icon uses 51 files with the requested color ranges;
   // the badge background uses the closest available Trello color.
   function getNearestBadgeColor(percent) {
     if (percent >= 100) return 'green';
@@ -129,6 +145,7 @@
             icon: getProgressIcon(percent),
             text: `${percent}%`,
             color: getNearestBadgeColor(percent),
+            monochrome: false,
           },
         ];
       });
